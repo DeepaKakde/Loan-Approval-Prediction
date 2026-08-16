@@ -1,100 +1,171 @@
-# Loan Approval Prediction
+# Loan Approval Prediction 🏦
 
-## About Project
+## About
 
-This is a Machine Learning project for predicting whether a loan application will be approved or not.
+This is a Machine Learning project to predict whether a loan application will be **approved or not approved**.
 
-I used the Loan Approval dataset and trained different Machine Learning models. After comparing the models, I selected Logistic Regression because it gave the best testing and cross-validation performance.
+I used the loan approval dataset and tried different classification algorithms to find a model that performs well on the given data. After comparing the models using testing accuracy and cross-validation, I selected **Logistic Regression** as the final model.
 
-I also created a simple GUI using Tkinter where we can enter the applicant details and predict the loan status.
+I also saved the trained model and used it in a simple **Tkinter application** for making predictions.
+
+---
 
 ## Dataset
 
-The dataset used in this project is `loan_approval.csv`.
+The dataset contains information about loan applicants such as:
 
-It contains information like:
+* Gender
+* Married
+* Dependents
+* Education
+* Self Employed
+* Applicant Income
+* Coapplicant Income
+* Loan Amount
+* Loan Amount Term
+* Credit History
+* Property Area
 
-- Gender
-- Married
-- Dependents
-- Education
-- Self Employed
-- Applicant Income
-- Coapplicant Income
-- Loan Amount
-- Loan Amount Term
-- Credit History
-- Property Area
-- Loan Status
+The target variable is `Loan_Status`.
+
+* `Y` → Loan Approved
+* `N` → Loan Not Approved
+
+The original dataset has **614 rows and 13 columns**.
+
+---
 
 ## Data Preprocessing
 
-In this project I performed the following preprocessing steps:
+Before training the models, I performed some basic data preprocessing.
 
-- Removed `Loan_ID`
-- Removed rows having missing values in some important columns
-- Filled missing values in `Self_Employed` using mode
-- Filled missing values in `Credit_History` using mode
-- Converted `3+` in Dependents to `3`
-- Converted categorical values into numerical values using mapping
-- Split the data into training and testing data
-- Used StandardScaler with Logistic Regression
+* Checked the dataset information and shape
+* Checked duplicate values
+* Checked missing values
+* Removed `Loan_ID`
+* Removed rows with missing values in some important columns
+* Filled missing values in `Self_Employed` and `Credit_History` using the mode
+* Converted `3+` dependents into `3`
+* Converted categorical values into numerical values
+* Separated the features and target variable
+* Used `train_test_split` with stratification
+* Applied `StandardScaler` for models where scaling was required
 
-## Models Used
+After preprocessing, the dataset contained **553 rows and 11 input features**.
 
-I tested the following models:
+---
 
-1. Logistic Regression
-2. K-Nearest Neighbors
-3. Decision Tree
-4. Random Forest
-5. Support Vector Classifier
-6. Gradient Boosting Classifier
+## Models I Tried
 
-After comparing the results, Logistic Regression performed the best for this dataset.
+I trained and compared the following classification models:
 
-### Logistic Regression Results
+* Logistic Regression
+* K-Nearest Neighbors
+* Decision Tree
+* Random Forest
+* Support Vector Classifier
+* Gradient Boosting Classifier
 
-- Training Accuracy: 80.54%
-- Testing Accuracy: 81.98%
-- Cross Validation Score: 80.30%
+I used **5-fold cross-validation** along with training and testing accuracy to compare the models.
 
-## Final Model
+---
 
-I trained the final Logistic Regression model on the complete processed dataset and saved it using Joblib.
+## Model Comparison
 
-Model file:
+| Model                   | Training Accuracy | Testing Accuracy | Cross-Validation |
+| ----------------------- | ----------------: | ---------------: | ---------------: |
+| **Logistic Regression** |            80.54% |       **81.98%** |       **80.30%** |
+| K-Nearest Neighbors     |            81.00% |           81.08% |           77.57% |
+| Decision Tree           |           100.00% |           69.37% |           71.24% |
+| Random Forest           |           100.00% |           79.28% |           78.85% |
+| SVC                     |            81.45% |           81.08% |           80.11% |
+| Gradient Boosting       |            90.50% |           79.28% |           77.04% |
 
-`Loan_Approval_Prediction_Model.pkl`
+### Final Model
 
-## GUI
+I selected **Logistic Regression** as the final model because it gave the highest cross-validation score among the models I tested and also performed well on the test data.
 
-I created a GUI using Tkinter.
+The Decision Tree and Random Forest models achieved 100% training accuracy, but their testing performance was lower. This shows that these models were fitting the training data too much compared to their performance on unseen data.
 
-The user needs to enter:
+---
 
-- Gender
-- Married
-- Dependents
-- Education
-- Self Employed
-- Applicant Income
-- Coapplicant Income
-- Loan Amount
-- Loan Amount Term
-- Credit History
-- Property Area
+## Model Saving
 
-After clicking the **Predict** button, the application shows:
+After selecting Logistic Regression, I trained the final model on the complete processed dataset and saved it using Joblib.
 
-- Loan Approved
-- Loan Not Approved
+```python
+joblib.dump(Final_Model, 'Loan_Approval_Prediction_Model.pkl')
+```
 
-The input fields are also cleared after prediction so that another prediction can be made.
+The saved model contains the complete pipeline:
 
-## How to Run
+```text
+StandardScaler
+      ↓
+Logistic Regression
+```
 
-First install the required libraries:
+This saved model can then be loaded and used for new loan applications.
 
-```bash
-pip install pandas numpy scikit-learn matplotlib seaborn joblib
+---
+
+## Prediction
+
+I tested the saved model with sample applicant information.
+
+For example:
+
+```text
+Gender              = Male
+Married             = Yes
+Dependents          = 2
+Education           = Not Graduate
+Self Employed       = No
+Applicant Income    = 2889
+Coapplicant Income  = 0
+Loan Amount         = 45
+Loan Amount Term    = 180
+Credit History      = 0
+Property Area       = Semiurban
+```
+
+For this example, the model predicted:
+
+**Loan Not Approved**
+
+---
+
+## Tkinter Application
+
+I also created a simple Tkinter interface using the saved model.
+
+The user can enter the applicant details and click on the **Predict** button. The application then displays either:
+
+**Loan Approved** ✅
+
+or
+
+**Loan Not Approved** ❌
+
+### Application Screenshot
+
+![Loan Approval Prediction](images/loan_prediction_gui.png)
+
+---
+
+## Technologies Used
+
+* Python
+* Pandas
+* NumPy
+* Scikit-learn
+* Matplotlib
+* Seaborn
+* Joblib
+* Tkinter
+* Jupyter Notebook
+
+
+
+
+
