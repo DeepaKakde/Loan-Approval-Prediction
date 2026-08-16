@@ -149,7 +149,7 @@ or
 
 ### Application Screenshot
 
-![Loan Approval Prediction](images/loan_prediction_gui.png)
+![Loan Approval Prediction](loan_prediction_gui.png)
 
 ---
 
